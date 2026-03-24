@@ -67,7 +67,7 @@ Methodology
 7. Convert model scores into a tiered retention strategy.
 
 Repository structure
-
+```
 .
 ├── README.md
 ├── requirements.txt
@@ -90,7 +90,7 @@ Repository structure
 │   └── Reducing_Churn_at_Ontario_Life_Early_Warning_Retention_System.pptx
 └── notes/
     └── refactor_notes.md
-
+```
 How to run
 
 1. Create a virtual environment.
