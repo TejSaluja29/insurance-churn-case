@@ -139,11 +139,77 @@ The model is designed as a **ranking engine**, not a binary classifier.
 | **Tier 2** | 0.70–0.75 | Personalized digital outreach + escalation |
 | **Tier 3** | 0.58–0.70 | Low-cost nudges + monitoring |
 
-### 💡 Why this matters
-- Higher-risk customers receive **more expensive interventions**
-- Lower-risk customers receive **scalable, low-cost engagement**
-- Enables **efficient allocation of retention resources**
+## 🚀 Deployment & Operationalization
 
+To move from analysis to real-world impact, this model should be deployed as a **monthly churn monitoring system** integrated into Ontario Life’s operations.
+
+### 🧩 System Design
+
+1. **Monthly Data Pipeline**
+   - Pull latest customer, policy, and satisfaction data
+   - Recompute engineered features (e.g., premium, tenure, CLV proxy)
+
+2. **Model Scoring**
+   - Apply the trained logistic regression model
+   - Generate a **churn risk score (0–1)** for every active policyholder
+
+3. **Customer Ranking**
+   - Sort customers by predicted churn probability
+   - Assign customers into Tier 1, Tier 2, and Tier 3 based on thresholds
+
+4. **Actionable Output**
+   - Export a **ranked outreach list** to retention teams
+   - Include key attributes (risk score, premium, tenure, satisfaction)
+
+---
+
+### ⚙️ Integration with Business Teams
+
+- **Retention Team**
+  - Receives Tier 1 and Tier 2 lists for direct outreach
+- **Marketing Team**
+  - Executes automated campaigns for Tier 3 customers
+- **Customer Experience Team**
+  - Monitors satisfaction-triggered alerts for early intervention
+
+---
+
+### 🔄 Continuous Monitoring
+
+To ensure long-term performance:
+
+- Track **model drift** and recalibrate regularly  
+- Re-evaluate thresholds based on:
+  - Outreach capacity  
+  - Save rates  
+  - Cost constraints  
+- Retrain the model periodically with updated data  
+
+---
+
+### 📊 Feedback Loop
+
+The system should evolve based on real outcomes:
+
+- Capture:
+  - Whether customers were contacted  
+  - Whether they were retained  
+- Use this data to:
+  - Improve model performance  
+  - Optimize intervention strategies  
+  - Quantify true ROI  
+
+---
+
+### 💡 Why this matters
+
+This deployment design turns the model into a **scalable decision-making system**, enabling:
+
+- Proactive retention instead of reactive churn response  
+- Efficient allocation of outreach resources  
+- Continuous improvement through data feedback  
+
+The result is not just a predictive model, but a **fully operational early-warning retention system**.
 ---
 
 ## 📈 Business Impact
