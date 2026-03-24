@@ -1,74 +1,199 @@
-Ontario Life Insurance Churn Prediction
+# Insurance Churn Prediction & Early-Warning Retention System
 
-Project overview
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-orange)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-yellow)
+![Status](https://img.shields.io/badge/Project-Complete-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-This repository turns the Ontario Life insurance churn case into a polished, business-facing analytics project. The goal is not only to predict churn, but to translate churn risk into a ranked outreach list, a tiered retention program, and a pilot measurement plan.
+---
 
-The project is structured as a consulting-style report. The main deliverable is a clean Jupyter notebook that connects data, modeling, and business action in one narrative.
+## 🏆 Competition Context
 
-Business question
+This project was developed for the Western University Actuarial Case Competition (WACC 2026), a competitive case event focused on solving real-world insurance business problems using data.
 
-Ontario Life wants to reduce churn across its life insurance portfolio by answering four questions:
-1. Which customers are most at risk of churn?
-2. What patterns in the data explain churn?
-3. Which operational levers should the company pull first?
-4. How should success be measured after rollout?
+Out of all participating teams, our team placed **Top 4 overall**, presenting a data-driven churn prediction and retention strategy to a panel of judges.
 
-Main deliverable
+---
 
-notebooks/01_ontario_life_churn_report.ipynb
+## 📌 Overview
 
-This notebook is the final analysis. It uses a balanced logistic regression model as the primary production-facing model because it matches the final slide narrative, keeps the modeling transparent, and supports threshold-based triage.
+This project analyzes customer churn for a life insurance provider (Ontario Life) and develops a **predictive early-warning system** to proactively identify and retain at-risk policyholders.
 
-Key results
+The goal is not just to predict churn, but to **translate model outputs into actionable business strategy**—enabling targeted retention, optimized outreach, and measurable ROI.
 
-Model performance
-- Holdout AUC-ROC: 0.6329
-- Accuracy at threshold 0.58: 78.8%
-- Average precision: 0.0980
-- Precision at threshold 0.58: 8.8%
-- Recall at threshold 0.58: 28.2%
+---
 
-What the data says
-- Overall churn rate is 5.9%
-- Churned customers have lower median satisfaction: 64.0 vs 68.8 for retained customers
-- Churned customers carry much higher median premiums: $434.70 vs $176.40
-- Churned customers are longer-tenured: median 9 years vs 7 years
-- Churn rises sharply by tenure band, from 2.42% in years 0 to 2 to 8.40% after year 10
-- Among customers who churned, the top stated reasons were Better Offer Elsewhere (33.6%), Premiums Unaffordable (29.0%), No Longer Needed (21.3%), and Poor Customer Service (16.2%)
+## 🎯 Business Objective
 
-Threshold strategy
-- Risk >= 0.75 flags 52 customers in the holdout set
-- Risk >= 0.70 flags 100 customers
-- Risk >= 0.58 flags 373 customers
+Ontario Life operates in a competitive insurance market where:
+- Customer acquisition is significantly more expensive than retention
+- Churn is difficult to predict due to multiple behavioral and lifecycle factors
 
-Ranking value
-- Top 10% of customers by risk contain 17.9% of churners
-- Top 20% contain 29.9%
-- Top 30% contain 45.3%
+This project answers four key questions:
 
-Business impact
+1. Which customers are most at risk of churn?  
+2. What factors drive that risk?  
+3. How should retention efforts be prioritized?  
+4. How can success be measured operationally?  
 
-This project intentionally frames the model as a triage tool, not a magic classifier.
+---
 
-The model is useful because it helps Ontario Life spend retention effort where risk is most concentrated:
-- If the team can only contact 100 customers, the 0.70 threshold produces a manageable list and surfaces 15 actual churners in the holdout sample. Random outreach to 100 customers would surface about 6 churners at the base rate.
-- If the team wants broader coverage, the 0.58 threshold captures more churners and supports low-cost digital outreach at scale.
-- The deck's rollout targets such as save rate, cost per save, and ROI should be treated as pilot KPIs, not as outputs directly calculated from this dataset.
+## 📊 Key Results
 
-Methodology
+- **Model**: Balanced Logistic Regression  
+- **AUC-ROC**: 0.6329  
+- **Accuracy (threshold = 0.58)**: 78.8%  
+- **Precision**: 8.8%  
+- **Recall**: 28.2%  
+- **Churn Rate**: 5.9%  
 
-1. Clean and profile the 10,000-customer dataset.
-2. Use churn_reason only for descriptive analysis, never as a predictive feature.
-3. Engineer an annual premium and CLV proxy.
-4. One-hot encode channel, health status, and policy term.
-5. Train a balanced logistic regression model on a stratified train/test split.
-6. Evaluate ranking quality, threshold trade-offs, and gains.
-7. Convert model scores into a tiered retention strategy.
+## 📈 Key Insights & Visual Analysis
 
-Repository structure
+### Churn Reason Breakdown
+![Churn Reasons](reports/figures/churn_reasons.png)
+
+- Churn is driven by a mix of **pricing, competition, lifecycle changes, and service issues**
+- No single intervention strategy will address all churn drivers
+
+---
+
+### Satisfaction as an Early Warning Signal
+![Satisfaction Gap](reports/figures/satisfaction_gap.png)
+
+- Lower satisfaction scores strongly correlate with churn  
+- Provides a **trigger for proactive intervention before cancellation**
+
+---
+
+### Lifecycle Risk (Tenure)
+![Tenure Churn](reports/figures/tenure_band_churn.png)
+
+- Churn increases steadily over time  
+- Long-tenured customers are not “safe” and require continued engagement  
+
+---
+
+### Key Drivers from Logistic Regression
+![Logistic Drivers](reports/figures/logistic_drivers.png)
+
+- Higher tenure and premiums increase risk  
+- Higher satisfaction reduces risk  
+- Whole Life policies show elevated churn relative to term products  
+
+---
+
+### Threshold Trade-off
+![Threshold Tradeoff](reports/figures/threshold_tradeoff.png)
+
+- Lower thresholds increase recall but raise outreach cost  
+- Higher thresholds improve precision but reduce coverage  
+
+---
+
+### Model Gains Chart
+![Gains Chart](reports/figures/gains_chart.png)
+
+- Top 30% of customers capture **45.3% of churners**  
+- Demonstrates strong targeting efficiency vs random outreach
+
+## 🧠 Approach
+
+### 1. Data Preparation
+- Cleaned and structured policyholder-level dataset
+- Excluded post-churn variables (e.g., `churn_reason`) to avoid data leakage
+- Engineered features such as:
+  - Annual premium
+  - CLV proxy (premium × tenure)
+
+### 2. Exploratory Data Analysis
+Focused on identifying **actionable business patterns**:
+- Satisfaction vs churn
+- Lifecycle (tenure) effects
+- Channel, policy type, and health segmentation
+- Churn reason distribution (for strategy, not modeling)
+
+### 3. Modeling
+- Trained a **balanced logistic regression model**
+- Chosen for:
+  - Interpretability
+  - Business transparency
+  - Direct support for threshold-based decision-making
+
+### 4. Evaluation
+- Emphasized **ranking quality (AUC)** over raw accuracy
+- Built **threshold trade-off analysis**
+- Developed **gains chart** for targeting efficiency
+
+---
+
+## ⚙️ From Model → Business Strategy
+
+The model is designed as a **ranking engine**, not a binary classifier.
+
+### 🎯 Threshold-Based Triage
+
+| Tier | Risk Threshold | Strategy |
+|------|--------------|---------|
+| **Tier 1** | ≥ 0.75 | High-touch intervention (calls, premium review) |
+| **Tier 2** | 0.70–0.75 | Personalized digital outreach + escalation |
+| **Tier 3** | 0.58–0.70 | Low-cost nudges + monitoring |
+
+### 💡 Why this matters
+- Higher-risk customers receive **more expensive interventions**
+- Lower-risk customers receive **scalable, low-cost engagement**
+- Enables **efficient allocation of retention resources**
+
+---
+
+## 📈 Business Impact
+
+### What the Model Enables
+- Prioritized outreach instead of blanket campaigns  
+- Concentration of churners into smaller, actionable segments  
+- Data-driven retention strategy design  
+
+### Example Efficiency Gains
+- Top 10% of customers → captures **17.9%** of churners  
+- Top 20% → **29.9%**  
+- Top 30% → **45.3%**  
+
+---
+
+## 🧪 Implementation Framework
+
+This project proposes a **pilot-based rollout strategy**:
+
+### Phase 1: Pilot
+- Target Tier 1 & Tier 2 customers  
+- Measure baseline save rates  
+
+### Phase 2: Expansion
+- Introduce Tier 3 digital outreach  
+- A/B test messaging and offers  
+
+### Phase 3: Scale
+- Automate monthly scoring  
+- Monitor model performance and drift  
+
+---
+
+## 📊 Measuring Success
+
+The dataset demonstrates **targeting value**, but not full ROI.
+
+Ontario Life should track:
+
+- Save rate (by tier)  
+- Cost per outreach & cost per save  
+- Retained premium  
+- Incremental lift vs control group  
+
+---
+
+## 📁 Repository Structure
 ```
-.
+/
 ├── README.md
 ├── requirements.txt
 ├── data/
@@ -85,13 +210,13 @@ Repository structure
 │       ├── satisfaction_gap.png
 │       ├── tenure_band_churn.png
 │       └── threshold_tradeoff.png
-├── references/
-│   ├── Insurance Churn Case.pdf
-│   └── Reducing_Churn_at_Ontario_Life_Early_Warning_Retention_System.pptx
-└── notes/
-    └── refactor_notes.md
+└── references/
+    ├── Insurance Churn Case.pdf
+    └── Reducing_Churn_at_Ontario_Life_Early_Warning_Retention_System.pptx
 ```
-How to run
+--- 
+
+## 🚀 How to Run
 
 1. Create a virtual environment.
 2. Install dependencies with:
@@ -101,32 +226,22 @@ How to run
 4. Open notebooks/01_ontario_life_churn_report.ipynb
 5. Run all cells from top to bottom.
 
-Recommended charts for the README
+---
 
-Use these exported figures in the public GitHub landing page:
-- reports/figures/satisfaction_gap.png
-- reports/figures/tenure_band_churn.png
-- reports/figures/gains_chart.png
-- reports/figures/logistic_drivers.png
+## 🧩 Key Takeaways
 
-Notes and limitations
+- Churn prediction alone is not enough—**operationalization is critical**
+- Logistic regression provides strong **interpretability and ranking power**
+- **Threshold design converts analytics into business strategy**
+- The next step is a **controlled pilot with measurable ROI**
 
-- This repository keeps the model intentionally simple and interpretable.
-- The dataset supports churn prediction and prioritization, but not full causal ROI measurement.
-- Cost per save, retained premium, and incremental ROI require intervention data that is not in the raw case dataset.
-- The feature set preserves the final deck logic. Because CLV proxy overlaps with tenure and premium, coefficient magnitudes should be interpreted directionally, not as causal effect sizes.
+---
 
-What makes this strong for recruiters
+## 📌 Final Note
 
-- The notebook reads like a client-facing report, not a class submission.
-- The model is tied to concrete operating decisions.
-- The write-up clearly separates what is measured from what is proposed.
-- The project shows judgment around leakage, thresholding, and business trade-offs.
+This project is structured as a **consulting-style deliverable**, emphasizing:
+- Clear business interpretation  
+- Actionable insights  
+- Practical implementation strategy  
 
-Suggested next upgrades
-
-1. Add probability calibration and a calibration curve.
-2. Add a small cost-simulation model for retention economics.
-3. Add a lightweight Streamlit app that scores uploaded policyholder files.
-4. Add unit tests for feature engineering and threshold logic.
-5. Add a one-page executive memo PDF as a portfolio asset.
+It demonstrates how data science can drive **real-world decision-making and measurable impact**.
